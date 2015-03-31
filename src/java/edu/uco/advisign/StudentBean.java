@@ -8,6 +8,7 @@ import java.util.Properties;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -55,24 +56,29 @@ public class StudentBean implements Serializable {
             boolean committed = false;
             try {
                 PreparedStatement registerQuery = conn.prepareStatement(
-                        "insert into student (first_name, last_name, password, email, student_id, major)"
-                                + " values (?, ?, ?, ?, ?, ?)");
-                registerQuery.setString(1, firstName);
-                registerQuery.setString(2, lastName);
+                        "insert into user_table (user_id, email, password, first_name, last_name)"
+                                + " values (?, ?, ?, ?, ?)");
+                registerQuery.setInt(1, studentId);
+                registerQuery.setString(2, email);
                 registerQuery.setString(3, SHA256Encrypt.encrypt(password));
-                registerQuery.setString(4, email);
-                registerQuery.setInt(5, studentId);
-                registerQuery.setString(6, major);
+                registerQuery.setString(4, firstName);
+                registerQuery.setString(5, lastName);
                 
                 registerQuery.executeUpdate();
                 conn.commit();
-                /*
-                registerQuery = conn.prepareStatement("insert into group_info(group_name, email) values (?, ?)");
+                
+                registerQuery = conn.prepareStatement("insert into student (student_id, major) values (?, ?)");
+                registerQuery.setInt(1, studentId);
+                registerQuery.setString(2, major);
+                registerQuery.executeUpdate();
+                conn.commit();
+                
+                registerQuery = conn.prepareStatement("insert into user_group(group_name, user_email) values (?, ?)");
                 registerQuery.setString(1, "student_group");
                 registerQuery.setString(2, email);
                 
                 registerQuery.executeUpdate();
-                conn.commit(); */
+                conn.commit();
                 committed = true;
             } finally {
                 if(!committed) {
@@ -83,9 +89,9 @@ public class StudentBean implements Serializable {
             conn.close();
         }
         
-        sendVerification();
+        //sendVerification();
         
-        return "/student/index";
+        return "index";
     }
 	
     public void sendVerification() {

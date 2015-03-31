@@ -9,8 +9,8 @@
     <h:body styleClass="page">
         <h:form>
             <img src="this.png" width="1000" height="150" alt="Test Photo" align=""/>
-            <br/><br/>
-            <!--Admin Login-->
+            <br/><br/><!--
+            Admin Login
             <h:panelGrid columns ="2" styleClass="login">
                 <h:outputText/>
                 <h:outputText value="Admin Login"/>
@@ -19,20 +19,24 @@
                 <h:outputLabel for="passwordInp" value="Password:"/>
                 <h:inputSecret id="passwordInp"/>
                 <h:outputText/>
-                <h:commandButton value="Login" action="#{advisorBean.sendVerification()}"/>
+                <h:commandButton value="Login" action="#advisorBean.sendVerification()}"/>
             </h:panelGrid>
-            <br />
+            <br />-->
             <!--Student Login-->
+            
+            <form method="POST" action="j_security_check">
             <h:panelGrid columns="2" styleClass="login">
                 <h:outputText/>
                 <h:outputText value="Student Login"/>
-                <h:outputLabel for="emailInput" value="Email:" />
-                <h:inputText id="emailInput" />
-                <h:outputLabel for="passwordInput" value="Password:" />
-                <h:inputSecret id="passwordInput" />
+                <h:outputText value="Username: " />
+                <input type="text" name="j_username" />
+                <h:outputText value="Password: " />
+                <input type="password" name="j_password" />
+                <br />
                 <h:link value="Register" outcome="register" />
-                <h:commandButton value="Login" action="#{studentBean.sendVerification()}" />
-            </h:panelGrid>
+                <input type="submit" value="Login" />
+            </h:panelGrid>    
+            </form>
         </h:form>
     </h:body>
 </html>

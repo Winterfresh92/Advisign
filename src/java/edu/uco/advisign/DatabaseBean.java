@@ -53,7 +53,7 @@ public class DatabaseBean implements Serializable {
         
         try {
             PreparedStatement ps = conn.prepareStatement("select student_id, first_name, last_name, password,"
-                    + " email, major from student");
+                    + " email, major from student join user_table on student_id = user_id");
 
             ResultSet result = ps.executeQuery();
 
