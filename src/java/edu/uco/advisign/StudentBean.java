@@ -74,7 +74,7 @@ public class StudentBean implements Serializable {
                 conn.commit();
                 
                 registerQuery = conn.prepareStatement("insert into user_group(group_name, user_email) values (?, ?)");
-                registerQuery.setString(1, "student_group");
+                registerQuery.setString(1, "studentgroup");
                 registerQuery.setString(2, email);
                 
                 registerQuery.executeUpdate();
@@ -89,7 +89,7 @@ public class StudentBean implements Serializable {
             conn.close();
         }
         
-        //sendVerification();
+        sendVerification();
         
         return "index";
     }

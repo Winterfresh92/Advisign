@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <title>Login</title>
+        <link rel='stylesheet' href="stylesheet.css" />
+    </h:head>
+    <h:body styleClass="page">
+        <h:form>
+            <img src="this.png" width="1000" height="150" alt="Test Photo" align=""/>
+            <br/><br/><!--
+            Admin Login
+            <h:panelGrid columns ="2" styleClass="login">
+                <h:outputText/>
+                <h:outputText value="Admin Login"/>
+                <h:outputLabel for="emailInp" value="Email:"/>
+                <h:inputText id="emailInp"/>
+                <h:outputLabel for="passwordInp" value="Password:"/>
+                <h:inputSecret id="passwordInp"/>
+                <h:outputText/>
+                <h:commandButton value="Login" action="#advisorBean.sendVerification()}"/>
+            </h:panelGrid>
+            <br />-->
+            <!--Student Login-->
+            
+            <form method="POST" action="j_security_check">
+            <h:panelGrid columns="2" styleClass="login">
+                <h:outputText/>
+                <h:outputText value="Student Login"/>
+                <h:outputText value="Username: " />
+                <input type="text" name="j_username" />
+                <h:outputText value="Password: " />
+                <input type="password" name="j_password" />
+                <br />
+                <h:link value="Register" outcome="register" />
+                <input type="submit" value="Login" />
+            </h:panelGrid>    
+            </form>
+        </h:form>
+    </h:body>
+</html>
+

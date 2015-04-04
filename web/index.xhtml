@@ -9,34 +9,13 @@
     <h:body styleClass="page">
         <h:form>
             <img src="this.png" width="1000" height="150" alt="Test Photo" align=""/>
-            <br/><br/><!--
-            Admin Login
-            <h:panelGrid columns ="2" styleClass="login">
-                <h:outputText/>
-                <h:outputText value="Admin Login"/>
-                <h:outputLabel for="emailInp" value="Email:"/>
-                <h:inputText id="emailInp"/>
-                <h:outputLabel for="passwordInp" value="Password:"/>
-                <h:inputSecret id="passwordInp"/>
-                <h:outputText/>
-                <h:commandButton value="Login" action="#advisorBean.sendVerification()}"/>
-            </h:panelGrid>
-            <br />-->
-            <!--Student Login-->
-            
-            <form method="POST" action="j_security_check">
-            <h:panelGrid columns="2" styleClass="login">
-                <h:outputText/>
-                <h:outputText value="Student Login"/>
-                <h:outputText value="Username: " />
-                <input type="text" name="j_username" />
-                <h:outputText value="Password: " />
-                <input type="password" name="j_password" />
-                <br />
-                <h:link value="Register" outcome="register" />
-                <input type="submit" value="Login" />
-            </h:panelGrid>    
-            </form>
+            <br/><br/>
+            <h:link value="Student Login" outcome="student/index" style="color: white;" />
+            <br/>
+            <h:link value="Advisor Login" outcome="advisor/index" style="color: white;" />
+            <br/>
+            <h:link value="Secretary Login" outcome="secretary/index" style="color: white;" />
+            <br/>
         </h:form>
     </h:body>
 </html>

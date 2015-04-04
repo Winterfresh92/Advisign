@@ -28,7 +28,7 @@
     <security-constraint>
         <display-name>student pages</display-name>
         <web-resource-collection>
-            <web-resource-name>Protected Student Error</web-resource-name>
+            <web-resource-name>Student Pages</web-resource-name>
             <description/>
             <url-pattern>/faces/student/*</url-pattern>
         </web-resource-collection>
@@ -40,7 +40,7 @@
     <security-constraint>
         <display-name>advisor pages</display-name>
         <web-resource-collection>
-            <web-resource-name>Protected Advisor Error</web-resource-name>
+            <web-resource-name>Advisor Pages</web-resource-name>
             <description/>
             <url-pattern>/faces/advisor/*</url-pattern>
         </web-resource-collection>
@@ -52,7 +52,7 @@
     <security-constraint>
         <display-name>secretary pages</display-name>
         <web-resource-collection>
-            <web-resource-name>Protected Secretary Error</web-resource-name>
+            <web-resource-name>Secretary Pages</web-resource-name>
             <description/>
             <url-pattern>/faces/secretary/*</url-pattern>
         </web-resource-collection>
@@ -65,7 +65,7 @@
         <auth-method>FORM</auth-method>
         <realm-name>AdvisignRealm</realm-name>
         <form-login-config>
-            <form-login-page>/faces/index.xhtml</form-login-page>
+            <form-login-page>/faces/login.xhtml</form-login-page>
             <form-error-page>/faces/loginError.xhtml</form-error-page>
         </form-login-config>
     </login-config>

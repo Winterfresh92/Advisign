@@ -3,15 +3,15 @@
 <sun-web-app error-url="">
   <security-role-mapping>
     <role-name>student</role-name>
-    <group-name>student_group</group-name>
+    <group-name>studentgroup</group-name>
   </security-role-mapping>
   <security-role-mapping>
     <role-name>advisor</role-name>
-    <group-name>advisor_group</group-name>
+    <group-name>advisorgroup</group-name>
   </security-role-mapping>
   <security-role-mapping>
     <role-name>secretary</role-name>
-    <group-name>secretary_group</group-name>
+    <group-name>secretarygroup</group-name>
   </security-role-mapping>
   <class-loader delegate="true"/>
   <jsp-config>
