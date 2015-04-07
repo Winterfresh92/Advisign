@@ -3,12 +3,13 @@ package edu.uco.advisign;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Properties;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -30,6 +31,8 @@ public class StudentBean implements Serializable {
     private int studentId;
     private String major;
     private String verificationCode;
+    private Course tempCourse;
+    private ArrayList<Course> completedCourses;
 
     @Resource(name = "jdbc/Advisign")
     private DataSource ds;
@@ -39,6 +42,179 @@ public class StudentBean implements Serializable {
     
     @PostConstruct
     public void init() {
+        tempCourse = new Course();
+        try {
+            completedCourses = generateCompletedCourses();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public String editCourse(Course course) {
+        course.setEditable(true);
+        return null;
+    }
+    
+    public String saveCourse(Course course) throws SQLException {
+        if (ds == null) {
+            throw new SQLException("ds is null; Can't get data source");
+        }
+
+        Connection conn = ds.getConnection();
+
+        if (conn == null) {
+            throw new SQLException("conn is null; Can't get db connection");
+        }
+        
+        try {
+            conn.setAutoCommit(false);
+            boolean committed = false;
+            try {
+                PreparedStatement updateStatement = conn.prepareStatement("update completed_course set course_prefix = ?, course_id = ?, course_name = ?"
+                        + ", semester = ?, credit_hours = ? where com_course_id = ?");
+                
+                updateStatement.setString(1, course.getPrefix());
+                updateStatement.setInt(2, course.getId());
+                updateStatement.setString(3, course.getName());
+                updateStatement.setString(4, course.getSemester());
+                updateStatement.setInt(5, course.getCredits());
+                updateStatement.setInt(6, course.getComId());
+                
+                updateStatement.executeUpdate();
+                
+                conn.commit();
+                committed = true;
+            } finally {
+                if(!committed) {
+                    conn.rollback();
+                }
+            }
+        } finally {
+            conn.close();
+        }
+                
+        course.setEditable(false);
+        completedCourses = generateCompletedCourses();
+        
+        return null;
+    }
+    
+    public String add() throws SQLException {
+        if (ds == null) {
+            throw new SQLException("ds is null; Can't get data source");
+        }
+
+        Connection conn = ds.getConnection();
+
+        if (conn == null) {
+            throw new SQLException("conn is null; Can't get db connection");
+        }
+        
+        try {
+            conn.setAutoCommit(false);
+            boolean committed = false;
+            try {
+                PreparedStatement insertStatement = conn.prepareStatement("insert into completed_course(course_prefix, course_id, course_name,"
+                        + "student_id, semester, credit_hours)"
+                        + " values(?, ?, ?, ?, ?, ?)");
+                
+                insertStatement.setString(1, tempCourse.getPrefix());
+                insertStatement.setInt(2, tempCourse.getId());
+                insertStatement.setString(3, tempCourse.getName());
+                insertStatement.setInt(4, studentId);
+                insertStatement.setString(5, tempCourse.getSemester());
+                insertStatement.setInt(6, tempCourse.getCredits());
+                
+                insertStatement.executeUpdate();
+                
+                conn.commit();
+                committed = true;
+            } finally {
+                if(!committed) {
+                    conn.rollback();
+                }
+            }
+        } finally {
+            conn.close();
+        }
+        
+        tempCourse = new Course();
+        completedCourses = generateCompletedCourses();
+        
+        return null;
+    }
+    
+    public String delete(Course course) throws SQLException {
+        if (ds == null) {
+            throw new SQLException("ds is null; Can't get data source");
+        }
+
+        Connection conn = ds.getConnection();
+
+        if (conn == null) {
+            throw new SQLException("conn is null; Can't get db connection");
+        }
+        
+        try {
+            conn.setAutoCommit(false);
+            boolean committed = false;
+            try {
+                PreparedStatement deleteStatement = conn.prepareStatement("delete from completed_course where"
+                        + " com_course_id = ?");
+                deleteStatement.setInt(1, course.getComId());
+                
+                deleteStatement.executeUpdate();
+                conn.commit();
+                committed = true;
+            } finally {
+                if(!committed) {
+                    conn.rollback();
+                }
+            }
+        } finally {
+            conn.close();
+        }
+        
+        completedCourses = generateCompletedCourses();
+        
+        return null;
+    }
+    
+    public ArrayList<Course> generateCompletedCourses() throws SQLException {
+        if(ds == null) {
+            throw new SQLException("Cannot get DataSource");
+        }
+        
+        Connection conn = ds.getConnection();
+        if(conn == null) {
+            throw new SQLException("Cannot get Connection");
+        }
+        
+        completedCourses = new ArrayList<>();
+        
+        try {
+            PreparedStatement ps = conn.prepareStatement("select com_course_id, course_prefix, course_id, course_name, semester, credit_hours"
+                    + " from completed_course where student_id = ?");
+            
+            ps.setInt(1, studentId);
+
+            ResultSet result = ps.executeQuery();
+
+            while (result.next()) {
+                Course c = new Course();
+                c.setComId(result.getInt("com_course_id"));
+                c.setPrefix(result.getString("course_prefix"));
+                c.setId(result.getInt("course_id"));
+                c.setName(result.getString("course_name"));
+                c.setSemester(result.getString("semester"));
+                c.setCredits(result.getInt("credit_hours"));
+                completedCourses.add(c);
+            }
+        } finally {
+            conn.close();
+        }
+        
+        return completedCourses;
     }
     
     public String registerStudent() throws SQLException {
@@ -90,6 +266,7 @@ public class StudentBean implements Serializable {
         }
         
         sendVerification();
+        completedCourses = generateCompletedCourses();
         
         return "index";
     }
@@ -177,6 +354,22 @@ public class StudentBean implements Serializable {
 
     public void setMajor(String major) {
         this.major = major;
+    }
+
+    public ArrayList<Course> getCompletedCourses() {
+        return completedCourses;
+    }
+
+    public void setCompletedCourses(ArrayList<Course> completedCourses) {
+        this.completedCourses = completedCourses;
+    }
+
+    public Course getTempCourse() {
+        return tempCourse;
+    }
+
+    public void setTempCourse(Course tempCourse) {
+        this.tempCourse = tempCourse;
     }
     
 }

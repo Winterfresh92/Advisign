@@ -21,6 +21,7 @@ public class DatabaseBean implements Serializable {
     
     private ArrayList<StudentBean> students;
     private ArrayList<String> majors;
+    private ArrayList<Course> courses;
     
     @Resource(name = "jdbc/Advisign")
     private DataSource ds;
@@ -33,6 +34,7 @@ public class DatabaseBean implements Serializable {
         try {
             students = generateStudentList();
             majors = generateMajorsList();
+            courses = generateCourseList();
         } catch (SQLException ex) {
             System.out.println("Error: " + ex.getMessage());
         }
@@ -104,6 +106,39 @@ public class DatabaseBean implements Serializable {
         
         return majors;
     }
+    
+    public ArrayList<Course> generateCourseList() throws SQLException {
+        if (ds == null) {
+            throw new SQLException("ds is null; Can't get data source");
+        }
+
+        Connection conn = ds.getConnection();
+
+        if (conn == null) {
+            throw new SQLException("conn is null; Can't get db connection");
+        }
+        
+        courses = new ArrayList<>();
+        
+        try {
+            PreparedStatement ps = conn.prepareStatement("select course_prefix, course_id, course_name from major_info");
+
+            ResultSet result = ps.executeQuery();
+
+            while (result.next()) {
+                Course temp = new Course();
+                temp.setPrefix(result.getString("course_prefix"));
+                temp.setId(result.getInt("course_id"));
+                temp.setName(result.getString("course_name"));
+                courses.add(temp);
+            }
+
+        } finally {
+            conn.close();
+        }
+        
+        return courses;
+    }
 
     public ArrayList<StudentBean> getStudents() {
         return students;
@@ -119,6 +154,14 @@ public class DatabaseBean implements Serializable {
 
     public void setMajors(ArrayList<String> majors) {
         this.majors = majors;
+    }
+
+    public ArrayList<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(ArrayList<Course> courses) {
+        this.courses = courses;
     }
     
 }

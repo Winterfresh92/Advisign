@@ -7,6 +7,7 @@ drop table user_table;
 drop table appointment;
 drop table courses;
 drop table prereqs;
+drop table completed_course;
 
 create table user_table (
     user_id integer primary key,
@@ -43,6 +44,7 @@ create table user_group (
 );
 
 create table appointment (
+    appt_id integer,
     advisor_id integer,
     student_id integer,
     appt_date date,
@@ -61,6 +63,20 @@ create table prereqs (
     prereq_prefix varchar(4),
     prereq_id integer
 );
+
+create table completed_course (
+    com_course_id INTEGER NOT NULL GENERATED ALWAYS 
+        AS IDENTITY (START WITH 1, INCREMENT BY 1),
+    course_prefix varchar(4),
+    course_id integer,
+    course_name varchar(255),
+    student_id integer,
+    semester varchar(5),
+    credit_hours integer
+);
+
+insert into completed_course(course_prefix, course_id, course_name, student_id, semester, credit_hours) 
+    values ('CMSC', 1513, 'Beginning Programming', 20292047, 'F2011', 3);
 
 /* The following puts all the major info into the database */
 insert into major_info(major_code, major_title) values ('6100', 'CS');

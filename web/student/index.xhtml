@@ -1,13 +1,67 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>#{studentBean.firstName} #{studentBean.lastName}</title>
         <link rel='stylesheet' href="stylesheet.css" />
     </h:head>
     <h:body>
         Welcome, #{studentBean.firstName}!
+        <br />
+        <h:outputText value="Completed Courses" />
+        <h:form>
+            <h:dataTable value="#{studentBean.completedCourses}" var="course">
+                <h:column>
+                    <f:facet name="header">Edit</f:facet>
+                    <h:commandLink value="Edit" action="#{studentBean.editCourse(course)}" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Course ID</f:facet>
+                    <h:outputText value="#{course.prefix}" rendered="#{not course.editable}" />
+                    <h:outputText value="#{course.id}" rendered="#{not course.editable}" />
+                    <h:inputText size="4" value="#{course.prefix}" rendered="#{course.editable}" />
+                    <h:inputText size="4" value="#{course.id}" rendered="#{course.editable}" />
+                    <f:facet name="footer">
+                        <h:inputText size="4" value="#{studentBean.tempCourse.prefix}" />
+                        <h:inputText size="4" value="#{studentBean.tempCourse.id}" />
+                    </f:facet>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Course Name</f:facet>
+                    <h:outputText value="#{course.name}" rendered="#{not course.editable}" />
+                    <h:inputText value="#{course.name}" rendered="#{course.editable}" />
+                    <f:facet name="footer">
+                        <h:inputText value="#{studentBean.tempCourse.name}" />
+                    </f:facet>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Semester</f:facet>
+                    <h:outputText value="#{course.semester}" rendered="#{not course.editable}" />
+                    <h:inputText size="10" value="#{course.semester}" rendered="#{course.editable}" />
+                    <f:facet name="footer">
+                        <h:inputText size="10" value="#{studentBean.tempCourse.semester}" />
+                    </f:facet>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Credits</f:facet>
+                    <h:outputText value="#{course.credits}" rendered="#{not course.editable}" />
+                    <h:inputText size="4" value="#{course.credits}" rendered="#{course.editable}" />
+                    <f:facet name="footer">
+                        <h:inputText size="4" value="#{studentBean.tempCourse.credits}" />
+                    </f:facet>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Action</f:facet>
+                    <h:commandLink value="Delete" action="#{studentBean.delete(course)}" rendered="#{not course.editable}" />
+                    <h:commandLink value="Save" action="#{studentBean.saveCourse(course)}" rendered="#{course.editable}" />
+                    <f:facet name="footer">
+                        <h:commandLink value="Add" action="#{studentBean.add()}" />
+                    </f:facet>
+                </h:column>
+            </h:dataTable>
+        </h:form>
     </h:body>
 </html>
 
