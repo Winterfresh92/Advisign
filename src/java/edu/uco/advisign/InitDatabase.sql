@@ -17,6 +17,11 @@ create table user_table (
     last_name varchar(255)
 );
 
+create table user_group (
+    group_name varchar(255),
+    email varchar(255)
+);
+
 create table student (
     student_id integer,
     major varchar(255),
@@ -36,11 +41,6 @@ create table advisor (
 create table secretary (
     secretary_id integer,
     foreign key (secretary_id) references user_table (user_id)
-);
-
-create table user_group (
-    group_name varchar(255),
-    user_email varchar(255)
 );
 
 create table appointment (
@@ -84,15 +84,19 @@ insert into major_info(major_code, major_title) values ('6101', 'CS Applied');
 insert into major_info(major_code, major_title) values ('6102', 'CS Information Science');
 insert into major_info(major_code, major_title) values ('6110', 'SE');
 
-insert into user_table(user_id, email, password, first_name, last_name) values (11111111, 'kstubblefield1@uco.edu', 'c4289629b08bc4d61411aaa6d6d4a0c3c5f8c1e848e282976e29b6bed5aeedc7',
+insert into user_table(user_id, email, password, first_name, last_name) values (11111111, 'kstubblefield1@uco.edu', 'c4289629b08bc4d61411aaa6d6d4a0c3c5f8c1e848e282976e29b6bed5aeedc/',
         'Hong', 'Sung');
 insert into advisor(advisor_id) values (11111111);
-insert into user_group(group_name, user_email) values ('advisorgroup', 'kstubblefield1@uco.edu');
+insert into user_group(group_name, email) values ('advisorgroup', 'kstubblefield1@uco.edu');
+
+insert into user_table(user_id, email, password, first_name, last_name) values(22222222, 'gcolon@uco.edu', 'c4289629b08bc4d61411aaa6d6d4a0c3c5f8c1e848e282976e29b6bed5aeedc', 'Giselle', 'Colon');
+insert into student(student_id, major) values (22222222, '6100 - CS');
+insert into user_group(group_name, email) values ('studentgroup', 'gcolon@uco.edu');
 
 insert into user_table(user_id, email, password, first_name, last_name) values (20292047, 'kstubblefield1@uco.edu', 'c4289629b08bc4d61411aaa6d6d4a0c3c5f8c1e848e282976e29b6bed5aeedc7',
         'Kevin', 'Stubblefield');
 insert into student(student_id, major) values (20292047, '6100 - CS');
-insert into user_group(group_name, user_email) values ('studentgroup', 'kstubblefield1@uco.edu');
+insert into user_group(group_name, email) values ('studentgroup', 'kstubblefield1@uco.edu');
 
 insert into courses(course_prefix, course_id, course_name) values ('CMSC', 1513, 'Beginning Programming');
 insert into courses(course_prefix, course_id, course_name) values ('CMSC', 1521, 'Beginning Programming Lab');
