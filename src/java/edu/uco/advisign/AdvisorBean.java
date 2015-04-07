@@ -24,7 +24,7 @@ public class AdvisorBean implements Serializable {
     private String email;
     private String verificationCode;
 
-    @Resource(name = "jdbc/Advisign")
+    @Resource(name = "jdbc/Adv")
     private DataSource ds;
     
     public AdvisorBean() {

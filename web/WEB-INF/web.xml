@@ -21,8 +21,64 @@
     <welcome-file-list>
         <welcome-file>faces/index.xhtml</welcome-file>
     </welcome-file-list>
+    <security-constraint>
+        <display-name>Advisor</display-name>
+        <web-resource-collection>
+            <web-resource-name>advisor</web-resource-name>
+            <description/>
+            <url-pattern>/faces/advisor/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>advisor</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>Secretary</display-name>
+        <web-resource-collection>
+            <web-resource-name>secretary</web-resource-name>
+            <description/>
+            <url-pattern>/faces/secretary/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>secretary</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>Student</display-name>
+        <web-resource-collection>
+            <web-resource-name>student</web-resource-name>
+            <description/>
+            <url-pattern>/faces/student/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>student</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <realm-name>jdbc</realm-name>
+        <form-login-config>
+            <form-login-page>/faces/login.xhtml</form-login-page>
+            <form-error-page>/faces/loginError.xhtml</form-error-page>
+        </form-login-config>
+    </login-config>
+    <security-role>
+        <description/>
+        <role-name>advisor</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>secretary</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>student</role-name>
+    </security-role>
     <resource-ref>
-        <res-ref-name>jdbc/Advisign</res-ref-name>
+        <res-ref-name>jdbc/Adv</res-ref-name>
         <res-type>javax.sql.ConnectionPoolDataSource</res-type>
         <res-auth>Container</res-auth>
         <res-sharing-scope>Shareable</res-sharing-scope>

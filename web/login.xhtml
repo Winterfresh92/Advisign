@@ -9,25 +9,9 @@
     <h:body styleClass="page">
         <h:form>
             <img src="this.png" width="1000" height="150" alt="Test Photo" align=""/>
-            <br/><br/><!--
-            Admin Login
-            <h:panelGrid columns ="2" styleClass="login">
-                <h:outputText/>
-                <h:outputText value="Admin Login"/>
-                <h:outputLabel for="emailInp" value="Email:"/>
-                <h:inputText id="emailInp"/>
-                <h:outputLabel for="passwordInp" value="Password:"/>
-                <h:inputSecret id="passwordInp"/>
-                <h:outputText/>
-                <h:commandButton value="Login" action="#advisorBean.sendVerification()}"/>
-            </h:panelGrid>
-            <br />-->
-            <!--Student Login-->
-            
+            <br/><br/>            
             <form method="POST" action="j_security_check">
             <h:panelGrid columns="2" styleClass="login">
-                <h:outputText/>
-                <h:outputText value="Student Login"/>
                 <h:outputText value="Username: " />
                 <input type="text" name="j_username" />
                 <h:outputText value="Password: " />
