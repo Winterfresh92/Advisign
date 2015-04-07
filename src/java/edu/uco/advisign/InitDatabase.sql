@@ -89,6 +89,11 @@ insert into user_table(user_id, email, password, first_name, last_name) values (
 insert into advisor(advisor_id) values (11111111);
 insert into user_group(group_name, user_email) values ('advisorgroup', 'kstubblefield1@uco.edu');
 
+insert into user_table(user_id, email, password, first_name, last_name) values (20292047, 'kstubblefield1@uco.edu', 'c4289629b08bc4d61411aaa6d6d4a0c3c5f8c1e848e282976e29b6bed5aeedc7',
+        'Kevin', 'Stubblefield');
+insert into student(student_id, major) values (20292047, '6100 - CS');
+insert into user_group(group_name, user_email) values ('studentgroup', 'kstubblefield1@uco.edu');
+
 insert into courses(course_prefix, course_id, course_name) values ('CMSC', 1513, 'Beginning Programming');
 insert into courses(course_prefix, course_id, course_name) values ('CMSC', 1521, 'Beginning Programming Lab');
 insert into courses(course_prefix, course_id, course_name) values ('CMSC', 1613, 'Programming I');
