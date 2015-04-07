@@ -22,7 +22,7 @@ public class DatabaseBean implements Serializable {
     private ArrayList<StudentBean> students;
     private ArrayList<String> majors;
     
-    @Resource(name = "jdbc/Advisign")
+    @Resource(name = "jdbc/Adv")
     private DataSource ds;
     
     public DatabaseBean() {

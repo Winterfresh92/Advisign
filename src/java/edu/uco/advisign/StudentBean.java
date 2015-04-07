@@ -31,7 +31,7 @@ public class StudentBean implements Serializable {
     private String major;
     private String verificationCode;
 
-    @Resource(name = "jdbc/Advisign")
+    @Resource(name = "jdbc/Adv")
     private DataSource ds;
     
     public StudentBean() {
