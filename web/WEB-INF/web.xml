@@ -34,7 +34,7 @@
         <role-name>student</role-name>
     </security-role>
     <resource-ref>
-        <res-ref-name>jdbc/Adv</res-ref-name>
+        <res-ref-name>jdbc/jdbcAdv</res-ref-name>
         <res-type>javax.sql.ConnectionPoolDataSource</res-type>
         <res-auth>Container</res-auth>
         <res-sharing-scope>Shareable</res-sharing-scope>
