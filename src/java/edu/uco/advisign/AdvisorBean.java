@@ -43,8 +43,10 @@ public class AdvisorBean implements Serializable {
     @PostConstruct
     public void init() {
         tempAccount = new Account();
+        tempSlot = new AdvisementSlot();
         try{
             secretaryAccounts = generateSecretaryAccounts();
+            timeSlots = generateTimeSlots();
         } catch(SQLException e){
             e.printStackTrace();
         }
@@ -188,12 +190,6 @@ public class AdvisorBean implements Serializable {
     
     public String editAccount(Account account){
         account.setEditable(true);
-        tempSlot = new AdvisementSlot();
-        try {            
-            timeSlots = generateTimeSlots();
-        } catch(SQLException e) {
-            e.printStackTrace();
-        }
         return null;
     }
     
@@ -414,4 +410,5 @@ public class AdvisorBean implements Serializable {
     public void setTempSlot(AdvisementSlot tempSlot) {
         this.tempSlot = tempSlot;
     }
+    
 }
