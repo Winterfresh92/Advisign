@@ -8,6 +8,7 @@ drop table appointment;
 drop table courses;
 drop table prereqs;
 drop table completed_course;
+drop table advisement_slot;
 
 create table user_table (
     user_id integer primary key,
@@ -46,11 +47,23 @@ create table secretary (
 );
 
 create table appointment (
-    appt_id integer,
+    appt_id INTEGER NOT NULL GENERATED ALWAYS 
+        AS IDENTITY (START WITH 1, INCREMENT BY 1),
     advisor_id integer,
     student_id integer,
     appt_date date,
     appt_time time
+);
+
+create table advisement_slot (
+    advisement_id INTEGER NOT NULL GENERATED ALWAYS 
+        AS IDENTITY (START WITH 1, INCREMENT BY 1),
+    advisor_id integer,
+    slot_length integer,
+    number_slots integer,
+    adv_date date,
+    start_time time,
+    end_time time
 );
 
 create table courses (
@@ -76,6 +89,9 @@ create table completed_course (
     semester varchar(5),
     credit_hours integer
 );
+
+insert into advisement_slot(advisor_id, slot_length, number_slots, adv_date, start_time, end_time)
+    values (11111111, 10, 2, '2015-05-12', '12:30:00', '13:00:00');
 
 insert into completed_course(course_prefix, course_id, course_name, student_id, semester, credit_hours) 
     values ('CMSC', 1513, 'Beginning Programming', 20292047, 'F2011', 3);
