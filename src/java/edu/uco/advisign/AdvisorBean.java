@@ -188,13 +188,13 @@ public class AdvisorBean implements Serializable {
     
     public String editAccount(Account account){
         account.setEditable(true);
-        return null;
         tempSlot = new AdvisementSlot();
         try {            
             timeSlots = generateTimeSlots();
         } catch(SQLException e) {
             e.printStackTrace();
         }
+        return null;
     }
     
     public String delete(AdvisementSlot timeSlot) throws SQLException {
@@ -233,7 +233,7 @@ public class AdvisorBean implements Serializable {
         return null;
     }
     
-    public String add() throws SQLException {
+    public String addTimeSlot() throws SQLException {
         if (ds == null) {
             throw new SQLException("ds is null; Can't get data source");
         }
