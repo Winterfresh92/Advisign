@@ -1,6 +1,11 @@
 package edu.uco.advisign;
 
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Properties;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
@@ -22,7 +27,9 @@ public class AdvisorBean implements Serializable {
     private String firstName;
     private String password;
     private String email;
-    private String verificationCode;
+    private int advisorId;
+    private AdvisementSlot tempSlot;
+    private ArrayList<AdvisementSlot> timeSlots;
 
     @Resource(name = "jdbc/Adv")
     private DataSource ds;
@@ -32,6 +39,129 @@ public class AdvisorBean implements Serializable {
     
     @PostConstruct
     public void init() {
+        tempSlot = new AdvisementSlot();
+        try {            
+            timeSlots = generateTimeSlots();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public String delete(AdvisementSlot timeSlot) throws SQLException {
+        if (ds == null) {
+            throw new SQLException("ds is null; Can't get data source");
+        }
+
+        Connection conn = ds.getConnection();
+
+        if (conn == null) {
+            throw new SQLException("conn is null; Can't get db connection");
+        }
+        
+        try {
+            conn.setAutoCommit(false);
+            boolean committed = false;
+            try {
+                PreparedStatement deleteStatement = conn.prepareStatement("delete from advisement_slot where"
+                        + " advisement_id = ?");
+                deleteStatement.setInt(1, timeSlot.getId());
+                
+                deleteStatement.executeUpdate();
+                conn.commit();
+                committed = true;
+            } finally {
+                if(!committed) {
+                    conn.rollback();
+                }
+            }
+        } finally {
+            conn.close();
+        }
+        
+        timeSlots = generateTimeSlots();
+        
+        return null;
+    }
+    
+    public String add() throws SQLException {
+        if (ds == null) {
+            throw new SQLException("ds is null; Can't get data source");
+        }
+
+        Connection conn = ds.getConnection();
+
+        if (conn == null) {
+            throw new SQLException("conn is null; Can't get db connection");
+        }
+        
+        try {
+            conn.setAutoCommit(false);
+            boolean committed = false;
+            try {
+                PreparedStatement insertStatement = conn.prepareStatement("insert into advisement_slot(slot_length, number_slots, adv_date,"
+                        + "advisor_id, start_time, end_time)"
+                        + " values(?, ?, ?, ?, ?, ?)");
+                
+                insertStatement.setInt(1, tempSlot.getInterval());
+                insertStatement.setInt(2, tempSlot.getNumberOfSlots());
+                insertStatement.setDate(3, new java.sql.Date(tempSlot.getDate().getTime()));
+                insertStatement.setInt(4, 11111111);
+                insertStatement.setTime(5, new java.sql.Time(tempSlot.getStartTime().getTime()));
+                insertStatement.setTime(6, new java.sql.Time(tempSlot.getEndTime().getTime()));
+                
+                insertStatement.executeUpdate();
+                
+                conn.commit();
+                committed = true;
+            } finally {
+                if(!committed) {
+                    conn.rollback();
+                }
+            }
+        } finally {
+            conn.close();
+        }
+        
+        tempSlot = new AdvisementSlot();
+        timeSlots = generateTimeSlots();
+        
+        return null;
+    }
+    
+    public ArrayList<AdvisementSlot> generateTimeSlots() throws SQLException {
+        if(ds == null) {
+            throw new SQLException("Cannot get DataSource");
+        }
+        
+        Connection conn = ds.getConnection();
+        if(conn == null) {
+            throw new SQLException("Cannot get Connection");
+        }
+        
+        timeSlots = new ArrayList<>();
+        
+        try {
+            PreparedStatement ps = conn.prepareStatement("select advisement_id, slot_length, number_slots, adv_date, start_time, end_time"
+                    + " from advisement_slot where advisor_id = ?");
+            
+            ps.setInt(1, 11111111);
+
+            ResultSet result = ps.executeQuery();
+
+            while (result.next()) {
+                AdvisementSlot a = new AdvisementSlot();
+                a.setId(result.getInt("advisement_id"));
+                a.setInterval(result.getInt("slot_length"));
+                a.setDate(result.getDate("adv_date"));
+                a.setStartTime(result.getTime("start_time"));
+                a.setEndTime(result.getTime("end_time"));
+                a.setNumberOfSlots(result.getInt("number_slots"));
+                timeSlots.add(a);
+            }
+        } finally {
+            conn.close();
+        }
+        return timeSlots;
     }
 	
     public void sendVerification() {
@@ -102,4 +232,21 @@ public class AdvisorBean implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public ArrayList<AdvisementSlot> getTimeSlots() {
+        return timeSlots;
+    }
+
+    public void setTimeSlots(ArrayList<AdvisementSlot> timeSlots) {
+        this.timeSlots = timeSlots;
+    }
+
+    public AdvisementSlot getTempSlot() {
+        return tempSlot;
+    }
+
+    public void setTempSlot(AdvisementSlot tempSlot) {
+        this.tempSlot = tempSlot;
+    }
+    
 }
