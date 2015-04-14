@@ -35,6 +35,8 @@ create table major_info (
 
 create table advisor (
     advisor_id integer,
+    lastName varchar(255),
+    firstName varchar(255),
     foreign key (advisor_id) references user_table (user_id)
 );
 

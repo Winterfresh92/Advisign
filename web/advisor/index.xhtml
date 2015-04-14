@@ -1,12 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Advisor</title>
         <link rel='stylesheet' href="stylesheet.css" />
     </h:head>
     <h:body>
-        
+        <h:outputText value="Secretary Accounts" />
+        <h:form>
+            <h:dataTable value="#{advisorBean.secretaryAccounts}" var="account">
+                <h:column>
+                    <f:facet name="header">Edit</f:facet>
+                    <h:commandLink value="Edit" action="#{advisorBean.editAccount(account)}" />
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Secretary Name</f:facet>
+                    <h:outputText value="#{secretary.lastName}" rendered="#{not secretary.editable}" />
+                    <h:inputText value="#{secretary.lastName}" rendered="#{secretary.editable}" />
+                    <f:facet name="footer">
+                        <h:inputText value="#{advisorBean.tempAccount.lastName}" />
+                    </f:facet>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Action</f:facet>
+                    <h:commandLink value="Delete" action="#{advisorBean.delete(account)}" rendered="#{not account.editable}" />
+                    <h:commandLink value="Save" action="#{advisorBean.saveAccount(account)}" rendered="#{account.editable}" />
+                    <f:facet name="footer">
+                        <h:commandLink value="Add" action="#{advisorBean.add()}" />
+                    </f:facet>
+                </h:column>
+            </h:dataTable>
+        </h:form>
     </h:body>
 </html>

@@ -26,7 +26,7 @@
         <web-resource-collection>
             <web-resource-name>advisor</web-resource-name>
             <description/>
-            <url-pattern>/faces/advisor/*</url-pattern>
+            <url-pattern>/advisor/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <description/>
@@ -38,7 +38,7 @@
         <web-resource-collection>
             <web-resource-name>secretary</web-resource-name>
             <description/>
-            <url-pattern>/faces/secretary/*</url-pattern>
+            <url-pattern>/secretary/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <description/>
@@ -50,7 +50,7 @@
         <web-resource-collection>
             <web-resource-name>student</web-resource-name>
             <description/>
-            <url-pattern>/faces/student/*</url-pattern>
+            <url-pattern>/student/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <description/>

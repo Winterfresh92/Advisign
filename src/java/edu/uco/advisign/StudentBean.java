@@ -34,7 +34,7 @@ public class StudentBean implements Serializable {
     private Course tempCourse;
     private ArrayList<Course> completedCourses;
 
-    @Resource(name = "jdbc/Adv")
+    @Resource(name = "jdbc/jdbcAdv")
     private DataSource ds;
     
     public StudentBean() {
